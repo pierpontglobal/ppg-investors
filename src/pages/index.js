@@ -132,6 +132,7 @@ const IndexPage = () => {
       <Layout style={{
         width: '80%',
         minWidth: '320px',
+        maxWidth: '960px',
         paddingTop: '60px',
         height: '100vh',
         paddingBottom: '60px',
