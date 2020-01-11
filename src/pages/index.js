@@ -25,6 +25,9 @@ const IndexPage = () => {
 
   const options = {
     maintainAspectRatio: true,
+    legend: {
+      display: false
+    },
     scales: {
       yAxes: [{
         gridLines: {
@@ -51,9 +54,12 @@ const IndexPage = () => {
           values.forEach(element => {
             element.value = '$' + element.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           });
-          return values[0].label;
         }
-      }
+      },
+      intersect: false,
+      xPadding: 15,
+      yPadding: 15,
+      mode: 'index'
     }
   }
 
@@ -63,21 +69,21 @@ const IndexPage = () => {
       {
         label: 'Monthly dividens',
         fill: true,
-        lineTension: 0.4,
-        backgroundColor: 'rgb(15, 76, 117)',
+        lineTension: 0.3,
+        backgroundColor: 'rgba(15, 76, 117, 0.6)',
         borderColor: 'rgb(15, 76, 117)',
         borderCapStyle: 'butt',
         borderDash: [],
         borderDashOffset: 0.0,
-        borderJoinStyle: 'miter',
+        borderJoinStyle: 'round',
         pointBorderColor: 'rgb(15, 76, 117)',
         pointBackgroundColor: '#fff',
-        pointBorderWidth: 1,
+        pointBorderWidth: 2,
         pointHoverRadius: 5,
         pointHoverBackgroundColor: 'rgb(15, 76, 117)',
-        pointHoverBorderColor: 'rgba(220,220,220,1)',
+        pointHoverBorderColor: '#fff',
         pointHoverBorderWidth: 2,
-        pointRadius: 1,
+        pointRadius: 5,
         pointHitRadius: 10,
         data: [1230, 1450, 320, 1009, 805, 704, 985, 1009, 805, 704]
       }
@@ -95,11 +101,11 @@ const IndexPage = () => {
       <h4 style={{ color: 'darkgrey', fontWeight: '300' }}>Invest in your future!</h4>
       <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start', marginBottom: '24px' }}>
         <InvestmentBox>
-          Net worth today
-          <Money>$544,560</Money>
+          Initial Investment
+          <Money>$15,000</Money>
         </InvestmentBox>
         <InvestmentBox>
-          Net worth at investment
+          Current investment value
           <Money>$3,43M</Money>
         </InvestmentBox>
       </div>
