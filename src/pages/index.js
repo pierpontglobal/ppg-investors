@@ -1,10 +1,14 @@
 import React from "react"
 
-import Layout from "../components/layout"
+import GatsdbyLayout from "../components/layout"
 import SEO from "../components/seo"
 import styled from "styled-components"
-
+import { Table, Layout, Menu, Icon } from 'antd';
+import 'antd/dist/antd.css';
 import { Line } from "react-chartjs-2"
+
+const { Header, Sider, Content } = Layout;
+const { SubMenu } = Menu;
 
 const InvestmentBox = styled.div`
   border-radius: 8px;
@@ -23,6 +27,39 @@ const Money = styled.div`
 
 const IndexPage = () => {
 
+  const columns = [
+    {
+      title: '',
+      dataIndex: 'title',
+      key: 'title'
+    },
+    {
+      title: '',
+      dataIndex: 'amount',
+      key: 'amount',
+      render: text => <td style={{ color: '#0f4c75' }}>{text}</td>
+    }
+  ]
+
+  const detailsData = [
+    {
+      title: 'Total revenue generated',
+      amount: '$130,000'
+    },
+    {
+      title: 'Previous month dividends',
+      amount: '$130,000'
+    },
+    {
+      title: 'Payment status',
+      amount: '$130,000'
+    },
+    {
+      title: 'Total dividends generated',
+      amount: '$130,000'
+    }
+  ]
+
   const options = {
     maintainAspectRatio: true,
     legend: {
@@ -35,12 +72,12 @@ const IndexPage = () => {
           drawTicks: false
         },
         ticks: {
-          callback: function(value, index, values) {
-              return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          callback: function (value, index, values) {
+            return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           },
           padding: 10,
           maxTicksLimit: 5
-      }
+        }
       }],
       xAxes: [{
         gridLines: {
@@ -50,7 +87,7 @@ const IndexPage = () => {
     },
     tooltips: {
       callbacks: {
-        title: function(values) {
+        title: function (values) {
           values.forEach(element => {
             element.value = '$' + element.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           });
@@ -91,33 +128,45 @@ const IndexPage = () => {
   };
 
   return (
-    <Layout>
-      <SEO title="Home" />
-      <h1 style={{
-        fontWeight: '100',
+    <GatsdbyLayout>
+      <Layout style={{
+        width: '80%',
+        minWidth: '320px',
+        paddingTop: '60px',
+        height: '100vh',
+        paddingBottom: '60px',
+        margin: `0 auto`
       }}>
-        Hello Hector Acosta
-    </h1>
-      <h4 style={{ color: 'darkgrey', fontWeight: '300' }}>Invest in your future!</h4>
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start', marginBottom: '24px' }}>
-        <InvestmentBox>
-          Initial Investment
+        <SEO title="Home" />
+        <div>
+          <h1 style={{
+            fontWeight: '100',
+          }}>
+            Hello Hector Acosta
+        </h1>
+          <h4 style={{ color: 'darkgrey', fontWeight: '300' }}>Invest in your future!</h4>
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start', marginBottom: '24px' }}>
+            <InvestmentBox>
+              Initial Investment
           <Money>$15,000</Money>
-        </InvestmentBox>
-        <InvestmentBox>
-          Current investment value
+            </InvestmentBox>
+            <InvestmentBox>
+              Current investment value
           <Money>$3,43M</Money>
-        </InvestmentBox>
-      </div>
-      <Line
-        width={100}
-        height={50}
-        data={data}
-        grid
-        options={options}
-      />
-      <h3 style={{marginTop: '12px'}}>Details</h3>
-    </Layout>
+            </InvestmentBox>
+          </div>
+          <Line
+            width={100}
+            height={50}
+            data={data}
+            grid
+            options={options}
+          />
+          <h3 style={{ marginTop: '12px' }}>Details</h3>
+          <Table columns={columns} dataSource={detailsData} pagination={{ disabled: true, hideOnSinglePage: true }} />
+        </div>
+      </Layout>
+    </GatsdbyLayout>
   )
 }
 
