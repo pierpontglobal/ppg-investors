@@ -25,6 +25,60 @@ const Money = styled.div`
   font-weight: 700;
 `;
 
+var getParams = function (url) {
+  var params = {};
+  var parser = document.createElement('a');
+  parser.href = url;
+  var query = parser.search.substring(1);
+  var vars = query.split('&');
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split('=');
+    params[pair[0]] = decodeURIComponent(pair[1]);
+  }
+  return params;
+};
+
+function parseJwt(token) {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+
+  return JSON.parse(jsonPayload);
+};
+
+const DummyUsers = [
+  {
+    name: 'Victor Diaz',
+    initialInvestment: '$15,000',
+    currentInvestment: '$3,43M',
+    detailsData: [
+      {
+        title: 'Total revenue generated',
+        amount: '$130,000 USD'
+      },
+      {
+        title: 'Previous month dividends',
+        amount: '$7,400 USD'
+      },
+      {
+        title: 'Payment status',
+        amount: 'PAID'
+      },
+      {
+        title: 'View receipt',
+        amount: 'download'
+      },
+      {
+        title: 'Total dividends generated',
+        amount: '$54,000 USD'
+      }
+    ]
+
+  }
+]
+
 const IndexPage = () => {
 
   const columns = [
@@ -37,26 +91,20 @@ const IndexPage = () => {
       title: '',
       dataIndex: 'amount',
       key: 'amount',
-      render: text => <td style={{ color: '#0f4c75' }}>{text}</td>
-    }
-  ]
+      render: text => {
+        if (text === 'download') {
+          return (<span>
+            <a target="_blank" href='https://asset-images-ppg.s3.us-east-1.amazonaws.com/RS.pdf?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEMr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCWV1LXdlc3QtMyJGMEQCIC18DUwePxZj9VVfYvhgnrECNafylDhA3heP0gNXxuYkAiBv6eBpYlZ0DsIzomWuVE2qbIu8DhMjIaR2vrwvuUhPWSqNAghTEAEaDDY2MTgyNzE4NjczNyIMlS1damiS%2FS3lnudSKuoBTRETuvsxr0QJ8jGkrdLPd9%2Bq2bev%2BGbn5g9lPyLnh1ggOqOMuvBc7GUBJSiAJ1b6RC925Ah2PyDqOBmA4VJaZqxIu%2BasS7KxTLhW2pK0UdntJM7tyO2USc7w73BOJQNR2rXcHHWFh8MYuyL%2FlTB9n7SUUMXyM17T5ldS6Sb%2FK4%2FXfvJBKPACzKPc78QIAPfRAZ5hYkUYL8IQIziuLyXyJee6TyKJNVFc77NpGBmISsO%2FV15IA%2F525JLynXw7hntlgBIm1OtATZo8jETvl%2BlmXcjnVvKHAL0YX90auffJIZzWWj%2Fm43WrwP1yMNfC9PAFOoMDVKeXRp3Q5%2FmBtHt6kl7YoZaXO1%2FueNRNuX63aFBMgSCbTMb3zWQ89b6MVkdCoV96tIfaFiTB%2F8cU4M%2Bvat6W6xdSGcIsk5ZoS4nipf%2BwJhV0rcVz1lXGg02U%2FRuBbsmPu5ROyeFZro6n0hzKewqDKGqaeZXf0F2P9xlKjAisM3PXGq72ln0uHAN6sy3XrObTD5NeNyOUYHhQ9rLnq2doYG7QlQ8RF%2FJXFbonvCvu65OjkT89aDs8%2FP4mrZfqpJKzLkfNFSunnvf9rlCxN3E77guCeYn2n01aRGODjZRJjZy0sYKE3HPeHZuKH088yXUSsSeyqxI9%2FM0zvwhZA3kqcqjQVXIZmVY71AbfPDEaKVZDa%2B8TaZmgdVa6mHonUcEWxbBhPkPIXyyYdm%2FAyOv2K1%2Fh6iFLbYhXsFHWgrW7z9Y7xM2T%2F7dbo%2BLGIUeRFpItn8xYjwAD87i0uU5HR0c7pEZH6g2KRsDXf720bjvLRBCkk9xIUuq8RIhauCbwBgRSUBc9&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200114T020911Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAZUF7ZOAYQJ4QSSKK%2F20200114%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=c3a20fba853da003f6557921a44474c11a99fe71aaffda9bb6bc8e815e2fe267'>
+              <Icon type="copy" />
+              {' '}
+              {text}
+            </a>
+          </span>)
+        } else {
+          return <td style={{ color: '#0f4c75' }}>{text}</td>
+        }
 
-  const detailsData = [
-    {
-      title: 'Total revenue generated',
-      amount: '$130,000'
-    },
-    {
-      title: 'Previous month dividends',
-      amount: '$130,000'
-    },
-    {
-      title: 'Payment status',
-      amount: '$130,000'
-    },
-    {
-      title: 'Total dividends generated',
-      amount: '$130,000'
+      }
     }
   ]
 
@@ -127,6 +175,10 @@ const IndexPage = () => {
     ]
   };
 
+  const userData = parseJwt(getParams(window.location.href).token);
+
+  const user = DummyUsers[userData.pos - 34];
+
   return (
     <GatsdbyLayout>
       <Layout style={{
@@ -143,17 +195,17 @@ const IndexPage = () => {
           <h1 style={{
             fontWeight: '100',
           }}>
-            Hello Hector Acosta
-        </h1>
+            Hello {user.name}
+          </h1>
           <h4 style={{ color: 'darkgrey', fontWeight: '300' }}>Invest in your future!</h4>
           <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start', marginBottom: '24px' }}>
             <InvestmentBox>
               Initial Investment
-          <Money>$15,000</Money>
+              <Money>{user.initialInvestment}</Money>
             </InvestmentBox>
             <InvestmentBox>
               Current investment value
-          <Money>$3,43M</Money>
+              <Money>{user.currentInvestment}</Money>
             </InvestmentBox>
           </div>
           <Line
@@ -164,7 +216,7 @@ const IndexPage = () => {
             options={options}
           />
           <h3 style={{ marginTop: '12px' }}>Details</h3>
-          <Table columns={columns} dataSource={detailsData} pagination={{ disabled: true, hideOnSinglePage: true }} />
+          <Table columns={columns} dataSource={user.detailsData} pagination={{ disabled: true, hideOnSinglePage: true }} />
         </div>
       </Layout>
     </GatsdbyLayout>
