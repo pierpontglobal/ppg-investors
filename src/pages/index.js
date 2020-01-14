@@ -75,11 +75,39 @@ const DummyUsers = [
         amount: '$54,000 USD'
       }
     ]
-
+  },
+  {
+    name: 'Sheldon Richard',
+    initialInvestment: '$15,000',
+    currentInvestment: '$3,43M',
+    detailsData: [
+      {
+        title: 'Total revenue generated',
+        amount: '$130,000 USD'
+      },
+      {
+        title: 'Previous month dividends',
+        amount: '$7,400 USD'
+      },
+      {
+        title: 'Payment status',
+        amount: 'PAID'
+      },
+      {
+        title: 'View receipt',
+        amount: 'download'
+      },
+      {
+        title: 'Total dividends generated',
+        amount: '$54,000 USD'
+      }
+    ]
   }
 ]
 
-const IndexPage = () => {
+const IndexPage = ({ component: Component, ...rest }) => {
+
+  console.log(rest)
 
   const columns = [
     {
@@ -175,7 +203,7 @@ const IndexPage = () => {
     ]
   };
 
-  const userData = parseJwt(getParams(window.location.href).token);
+  const userData = parseJwt(getParams(rest.location.search).token);
 
   const user = DummyUsers[userData.pos - 34];
 
