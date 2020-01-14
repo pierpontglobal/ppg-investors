@@ -6,6 +6,7 @@ import styled from "styled-components"
 import { Table, Layout, Menu, Icon } from 'antd';
 import 'antd/dist/antd.css';
 import { Line } from "react-chartjs-2"
+import qs from 'query-string'
 
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
@@ -24,19 +25,6 @@ const Money = styled.div`
   font-size: 16px;
   font-weight: 700;
 `;
-
-var getParams = function (url) {
-  var params = {};
-  var parser = document.createElement('a');
-  parser.href = url;
-  var query = parser.search.substring(1);
-  var vars = query.split('&');
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split('=');
-    params[pair[0]] = decodeURIComponent(pair[1]);
-  }
-  return params;
-};
 
 function parseJwt(token) {
   var base64Url = token.split('.')[1];
@@ -203,7 +191,7 @@ const IndexPage = ({ component: Component, ...rest }) => {
     ]
   };
 
-  const userData = parseJwt(getParams(rest.location.search).token);
+  const userData = parseJwt(qs.parse(rest.location.search).token);
 
   const user = DummyUsers[userData.pos - 34];
 
